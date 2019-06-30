@@ -17,6 +17,7 @@ $ python app.py
 
 ## API Endpoint 
 *URL* `http://localhost:8888/api/v1/company/generate_logo?id=<COMPANY_ID>`
+
 *Example* : `http://localhost:8888/api/v1/company/generate_logo?id=C004`
 
 ## Response
