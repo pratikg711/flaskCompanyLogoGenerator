@@ -20,7 +20,7 @@ $ python app.py
 
 *Example* : `http://localhost:8888/api/v1/company/generate_logo?id=C004`
 
-*Heroku* `https://quiet-inlet-39335.herokuapp.com/api/v1/company/generate_logo?id=C004`
+*Heroku* `https://quiet-inlet-39335.herokuapp.com`
 
 ## Response
 ```

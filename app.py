@@ -5,6 +5,9 @@ Description : This file provides implementation for REST API  for creation of lo
 """
 
 from flask import Flask, request, jsonify
+from flask import render_template
+from flask import request
+from flask import redirect
 import requests
 import requests_cache
 import json
@@ -16,16 +19,19 @@ COMPANY_LOGO_LENGTH = 3 # Configure Logo length
 SUCCESS_OK = 0 # Success
 FAILURE = 2 # Something went wrong
 
+@app.route('/')
+def index():
+   return render_template("logo.html")
+
 @app.errorhandler(404)
 def page_not_found(e):
     return jsonify({ "status": "404","data" : "Page Not Found!" })
 
-@app.route('/api/v1/company/generate_logo', methods=['GET'])
+@app.route('/generate_logo', methods=["GET","POST"])
 def get_logo_name():
-    requests_cache.install_cache('cache_company_list') #cache for web request
-   
-    if 'id' in request.args:
-        id = request.args['id']
+
+    if 'CompanyId' in request.form:
+        id = request.form["CompanyId"]
     else:
         return jsonify({ "status": "200","data" : "Please specify company ID!" })
     
@@ -34,6 +40,7 @@ def get_logo_name():
 
     # find matching company id
     company_info = find_company_info(id, res.json()) 
+    logo = {}
     if company_info == None:
         return jsonify(generate_op_repsonse(None,None))
     else:    
@@ -41,7 +48,10 @@ def get_logo_name():
 
         logo_name = generate_logo_str(sorted_company_name)
 
-        return jsonify(generate_op_repsonse(company_info,logo_name))
+        logo = generate_op_repsonse(company_info,logo_name)
+        
+    return render_template("details.html",logo=logo)
+  
 
 def find_company_info(id, company_info):
     company_details = None
